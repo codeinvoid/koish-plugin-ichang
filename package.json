@@ -1,8 +1,11 @@
 {
-  "name": "@hoige/koishi-plugin-ichang",
-  "description": "算命",
-  "version": "0.0.1",
+  "name": "koishi-plugin-ichang",
+  "description": "今天运气如何？",
+  "version": "1.0.5",
   "main": "lib/index.js",
+  "contributors": [
+    "HoiGe <hoige@pie.moe>"
+  ],
   "typings": "lib/index.d.ts",
   "files": [
     "lib",
@@ -15,13 +18,14 @@
     "plugin"
   ],
   "peerDependencies": {
-    "koishi": "^4.15.4",
-    "koishi-plugin-cron": "^2.0.5"
+    "koishi": "^4.15.4"
   },
   "dependencies": {
+    "crypto-js": "^4.2.0",
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4",
     "@types/seedrandom": "^3"
   }
 }

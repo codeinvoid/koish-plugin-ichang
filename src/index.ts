@@ -1,7 +1,7 @@
 import { Context, Schema, Session } from "koishi";
 import seedrandom from "seedrandom";
-import crypto from "crypto";
 import type {} from "@koishijs/cache";
+import sha256 from "crypto-js/sha256";
 
 export interface Config {}
 interface Range {
@@ -39,7 +39,7 @@ export function apply(ctx: Context) {
         hashCode(pid + platform + event).toString()
       );
 
-      if (event.length >= 18) {
+      if (getEvent(event).length >= 18) {
         session.send(session.text(".too_long"));
       } else {
         if (data == undefined) {
@@ -49,9 +49,9 @@ export function apply(ctx: Context) {
             ran_number,
             getNextDay()
           );
-          sendMessage(session, event, ran_number, texts);
+          sendMessage(session, getEvent(event), ran_number, texts);
         } else {
-          sendMessage(session, event, data, texts);
+          sendMessage(session, getEvent(event), data, texts);
         }
       }
     });
@@ -83,15 +83,10 @@ function generateMagicRandomNumber(
   event: string,
   id: string
 ): number {
-  const array = new Uint32Array(1);
-  crypto.getRandomValues(array);
-  const snum = array[0];
   const rnum = Math.floor(Math.random() * (max - min + 1)) + min;
   const timestamp: number = new Date().getTime();
 
-  const magic = seedrandom(
-    snum.toString() + event + rnum.toString() + timestamp.toString() + id
-  );
+  const magic = seedrandom(event + rnum.toString() + timestamp.toString() + id);
   return Math.floor(magic() * (max - min + 1)) + min;
 }
 
@@ -106,7 +101,14 @@ function getNextDay(): number {
 }
 
 function hashCode(input: string): string {
-  const hash = crypto.createHash("sha256");
-  hash.update(input);
-  return hash.digest("hex");
+  const hash = sha256(input).toString();
+  return hash;
+}
+
+function getEvent(event: string): string {
+  if (event == undefined) {
+    return "今日";
+  } else {
+    return event;
+  }
 }
