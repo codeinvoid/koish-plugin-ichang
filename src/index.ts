@@ -1,27 +1,18 @@
 import { Context, Schema, Session } from "koishi";
-
 import seedrandom from "seedrandom";
-
 import crypto from "crypto";
-
-export const inject = ["cache"];
-
-export const name = "ichang";
-
-export interface Config {}
-
-import {} from "koishi-plugin-cron";
-
 import type {} from "@koishijs/cache";
 
-export const Config: Schema<Config> = Schema.object({});
-
+export interface Config {}
 interface Range {
   min: number;
   max: number;
   text: string;
 }
 
+export const inject = ["cache"];
+export const name = "ichang";
+export const Config: Schema<Config> = Schema.object({});
 const max = 100;
 const min = 0;
 
