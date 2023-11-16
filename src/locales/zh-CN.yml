@@ -1,0 +1,15 @@
+commands:
+  算命:
+    description: 算命
+    messages:
+      luck_1: 元吉
+      luck_2: 大吉
+      luck_3: 吉
+      luck_4: 孚
+      luck_5: 无悔
+      luck_6: 悔
+      luck_7: 吝
+      luck_8: 厉
+      luck_9: 凶
+      feedback: '{0} {1} ({2})'
+      too_long: 脑子太小，算不过来了:(
