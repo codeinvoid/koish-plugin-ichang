@@ -22,7 +22,11 @@ export function apply(ctx: Context) {
     .command("算命 [event:text]")
     .action(async ({ session, options }, event) => {
       const { platform, userId: pid } = session;
-      const ran_number = generateMagicRandomNumber(max, min, hashCode(pid + platform + event).toString());
+      const ran_number = generateMagicRandomNumber(
+        max,
+        min,
+        hashCode(pid + platform + getEvent(event)).toString()
+      );
       const texts: Range[] = [
         { min: 0, max: 11, text: session.text(".luck_1") },
         { min: 12, max: 22, text: session.text(".luck_2") },
@@ -36,7 +40,7 @@ export function apply(ctx: Context) {
       ];
       const data: number = await ctx.cache.get(
         "default",
-        hashCode(pid + platform + event).toString()
+        hashCode(pid + platform + getEvent(event)).toString()
       );
 
       if (getEvent(event).length >= 18) {
@@ -45,7 +49,7 @@ export function apply(ctx: Context) {
         if (data == undefined) {
           await ctx.cache.set(
             "default",
-            hashCode(pid + platform + event).toString(),
+            hashCode(pid + platform + getEvent(event)).toString(),
             ran_number,
             getNextDay()
           );
@@ -84,8 +88,9 @@ function generateMagicRandomNumber(
 ): number {
   const rnum = Math.floor(Math.random() * (99999999 - min + 1)) + min;
   const timestamp: number = new Date().getTime();
-
-  const magic = seedrandom(hashCode(event + rnum.toString() + timestamp.toString()));
+  const magic = seedrandom(
+    hashCode(event + rnum.toString() + timestamp.toString())
+  );
   return Math.floor(magic() * (max - min + 1)) + min;
 }
 
@@ -105,9 +110,5 @@ function hashCode(input: string): string {
 }
 
 function getEvent(event: string): string {
-  if (event == undefined) {
-    return "今日";
-  } else {
-    return event;
-  }
+  return event ?? "今日";
 }

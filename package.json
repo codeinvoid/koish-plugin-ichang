@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-ichang",
   "description": "今天运气如何？",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "lib/index.js",
   "contributors": [
     "HoiGe <hoige@pie.moe>"
