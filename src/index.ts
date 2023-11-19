@@ -22,7 +22,7 @@ export function apply(ctx: Context) {
     .command("算命 [event:text]")
     .action(async ({ session, options }, event) => {
       const { platform, userId: pid } = session;
-      const ran_number = generateMagicRandomNumber(max, min, event, pid);
+      const ran_number = generateMagicRandomNumber(max, min, hashCode(pid + platform + event).toString());
       const texts: Range[] = [
         { min: 0, max: 11, text: session.text(".luck_1") },
         { min: 12, max: 22, text: session.text(".luck_2") },
@@ -80,13 +80,12 @@ function chooseText(x: number, texts: Range[]): string {
 function generateMagicRandomNumber(
   min: number,
   max: number,
-  event: string,
-  id: string
+  event: string
 ): number {
-  const rnum = Math.floor(Math.random() * (max - min + 1)) + min;
+  const rnum = Math.floor(Math.random() * (99999999 - min + 1)) + min;
   const timestamp: number = new Date().getTime();
 
-  const magic = seedrandom(event + rnum.toString() + timestamp.toString() + id);
+  const magic = seedrandom(hashCode(event + rnum.toString() + timestamp.toString()));
   return Math.floor(magic() * (max - min + 1)) + min;
 }
 
